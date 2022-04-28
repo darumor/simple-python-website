@@ -11,6 +11,11 @@ if __name__ == '__main__':
     Config()
     Store.migrate_db(Config.config)
 
+    #test_db = bottle.ext.sqlite.Plugin(dbfile='/tmp/test.db')
+    #cache_db = bottle.ext.sqlite.Plugin(dbfile=':memory:', keyword='cache')
+    #app.install(test_db)
+    #app.install(cache_db)
+
     database_filename = os.path.join(Config.config.data_directory, Config.config.db_filename)
     install(SQLitePlugin(dbfile=database_filename))
 

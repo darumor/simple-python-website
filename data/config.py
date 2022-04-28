@@ -15,7 +15,6 @@ class Config:
     ENV_SESSION_TTL = 'SPW_SESSION_TTL'
 
     defaults = dict(
-        SPW_DATABASE_FILENAME='test1.db',
         SPW_MIGRATIONS_FILENAME='migrations.json',
         SPW_DATA_DIRECTORY='data',                  # should be an absolute path
         SPW_STATIC_FILES_DIRECTORY='static',        # should be an absolute path
@@ -26,7 +25,6 @@ class Config:
     )
 
     def __init__(self,
-                 database_filename=None,
                  migrations_filename=None,
                  data_directory=None,
                  static_files_directory=None,
@@ -34,7 +32,6 @@ class Config:
                  password_secret=None,
                  port=None,
                  session_ttl=None):
-        self.db_filename = database_filename or os.getenv(Config.ENV_DATABASE_FILENAME) or Config.defaults[Config.ENV_DATABASE_FILENAME]
         self.migrations_filename = migrations_filename or os.getenv(Config.ENV_MIGRATIONS_FILENAME) or Config.defaults[Config.ENV_MIGRATIONS_FILENAME]
         self.data_directory = data_directory or os.getenv(Config.ENV_DATA_DIRECTORY) or Config.defaults[Config.ENV_DATA_DIRECTORY]
         self.static_files_directory = static_files_directory or os.getenv(Config.ENV_STATIC_FILES_DIRECTORY) or Config.defaults[Config.ENV_STATIC_FILES_DIRECTORY]

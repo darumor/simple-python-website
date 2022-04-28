@@ -1,0 +1,9 @@
+{
+    "migrations": [
+        {
+            "version": 1,
+            "comment": "created migrations table",
+            "sql": "create table if not exists migrations (\n    version integer primary key,\n    comment text not null,\n    migration_date text\n    );"
+        }
+    ]
+}

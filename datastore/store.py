@@ -7,10 +7,10 @@ from datastore.connection import Connection
 class Store:
 
     @staticmethod
-    def migrate_db(conf):
+    def migrate_db(conf, service=None):
         schema_version = Store.check_schema_version(conf)
 
-        file = os.path.join(conf.data_directory, conf.migrations_filename)
+        file = conf.get_migrations_file_path()
         data = None
         with open(file, 'r') as f:
             data = json.load(f)

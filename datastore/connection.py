@@ -6,7 +6,7 @@ import os
 class Connection(object):
     def __init__(self, conf):
         self.config = conf
-        self.database_filename = os.path.join(conf.data_directory, conf.db_filename)
+        self.database_filename = conf.get_db_file_path()
         self.db_connection = None
 
     def __enter__(self):
