@@ -4,17 +4,17 @@ from app.app_main import App
 
 @get('/static/<filename>')
 def server_static(filename):
-    return static_file(filename, root=App().config.static_files_directory)
+    return static_file(filename, root=App.service.config.static_files_directory)
 
 
 @get('/scripts/components/<filename>')
 def server_script(filename):
-    return static_file(filename, root=App().config.static_files_directory+'/scripts/components')
+    return static_file(filename, root=App.service.config.static_files_directory+'/scripts/components')
 
 
 @get('/scripts/<filename>')
 def server_script(filename):
-    return static_file(filename, root=App().config.static_files_directory+'/scripts')
+    return static_file(filename, root=App.service.config.static_files_directory+'/scripts')
 
 
 @get('/')

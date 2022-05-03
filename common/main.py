@@ -1,8 +1,8 @@
-from bottle import run, install
+import bottle
 from bottle_sqlite import SQLitePlugin
 from common.config import Config
-from datastore.store import Store
-from common import api
+from common.store import Store
+from common.enable_cors import EnableCors
 
 
 class Main:
@@ -15,6 +15,8 @@ class Main:
         print(f"Starting up {self.service}...")
         Store.migrate_db(self.config, self.service)
 
-        install(SQLitePlugin(dbfile=self.config.get_db_file_path()))
-        run(host=self.config.get_host(), port=self.config.get_port())
+        a = bottle.app()
+        a.install(SQLitePlugin(dbfile=self.config.get_db_file_path()))
+        a.install(EnableCors())
+        a.run(host=self.config.get_host(), port=self.config.get_port())
 

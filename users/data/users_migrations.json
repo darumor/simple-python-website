@@ -1,0 +1,14 @@
+{
+    "migrations": [
+        {
+            "version": 1,
+            "comment": "created migrations table",
+            "sql": "create table if not exists migrations (\n    version integer primary key,\n    comment text not null,\n    migration_date text\n    );"
+        },
+        {
+            "version": 2,
+            "comment": "created users table",
+            "sql": "create table if not exists users (\n    id integer primary key autoincrement,\n    firstname text,\n    lastname text,\n    is_admin bit not null,\n    created_at text not null\n);"
+        }
+    ]
+}

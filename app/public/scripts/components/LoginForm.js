@@ -13,13 +13,17 @@ export default {
         }
     },
     methods: {
-        postLogin: function(event) {
-            const url = Services.getServiceUrl(SERVICE_LOGIN);
+        postLogin: async function(event) {
+            const login_url = await Services.getServiceUrl(SERVICE_LOGIN);
+            console.log(login_url)
+            const url = login_url + '/login';
+            console.log('POSTING: ' + url);
             axios.post(url, {
                 username: this.username,
                 password: this.password
             })
             .then(response => {
+                console.log(response);
                 if (response.data.login_success) {
                     this.isSuccess = true;
                     this.isFailed = false;

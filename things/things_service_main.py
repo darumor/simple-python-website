@@ -2,8 +2,7 @@ import os
 from bottle import run, install
 from bottle_sqlite import SQLitePlugin
 from data.config import Config
-from datastore.store import Store
-import api
+from common.store import Store
 
 if __name__ == '__main__':
     print("Starting up...")

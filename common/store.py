@@ -1,7 +1,6 @@
-import os.path
 import json
 from sqlite3 import Error
-from datastore.connection import Connection
+from common.datastore.connection import Connection
 
 
 class Store:

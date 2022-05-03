@@ -13,7 +13,6 @@ class Config:
     ENV_HOST = 'env_host'
     CONF_PORT = 'port'
     ENV_PORT = 'env_port'
-    CONF_PATH = 'path'
     CONF_DATA_DIRECTORY = 'data_directory'
     CONF_DB_FILE_NAME = 'db_file_name'
     CONF_MIGRATIONS_FILE_NAME = 'migrations_file_name'
@@ -22,12 +21,14 @@ class Config:
     ENV_STATIC_FILES_DIRECTORY = 'SPW_STATIC_FILES_DIRECTORY'
     ENV_COOKIE_SECRET = 'SPW_COOKIE_SECRET'
     ENV_PASSWORD_SECRET = 'SPW_PASSWORD_SECRET'
+    ENV_TOKEN_SECRET = 'SPW_TOKEN_SECRET'
     ENV_SESSION_TTL = 'SPW_SESSION_TTL'
     ENV_CONFIG_FILE_NAME = 'SPW_CONFIG_FILE_NAME'
 
     defaults = dict(
         SPW_COOKIE_SECRET='some-secret-value',
         SPW_PASSWORD_SECRET='some-other-secret-value',
+        SPW_TOKEN_SECRET='yet-another-secret-value',
         SPW_SESSION_TTL=10,
         SPW_CONFIG_FILE_NAME=None
     )
@@ -39,7 +40,6 @@ class Config:
             ENV_HOST: 'SPW_APP_HOST',
             CONF_PORT: 9999,
             ENV_PORT: 'SPW_APP_PORT',
-            CONF_PATH: '/',
             CONF_DATA_DIRECTORY: 'app/data',
             CONF_DB_FILE_NAME: 'app.db',
             CONF_MIGRATIONS_FILE_NAME: 'app_migrations.json',
@@ -51,7 +51,6 @@ class Config:
             ENV_HOST: 'SPW_USERS_HOST',
             CONF_PORT: 9998,
             ENV_PORT: 'SPW_USERS_PORT',
-            CONF_PATH: '/users',
             CONF_DATA_DIRECTORY: 'users/data',
             CONF_DB_FILE_NAME: 'users.db',
             CONF_MIGRATIONS_FILE_NAME: 'users_migrations.json',
@@ -63,7 +62,6 @@ class Config:
             ENV_HOST: 'SPW_LOGIN_HOST',
             CONF_PORT: 9996,
             ENV_PORT: 'SPW_LOGIN_PORT',
-            CONF_PATH: '/login',
             CONF_DATA_DIRECTORY: 'login/data',
             CONF_DB_FILE_NAME: 'login.db',
             CONF_MIGRATIONS_FILE_NAME: 'login_migrations.json',
@@ -75,7 +73,6 @@ class Config:
             ENV_HOST: 'SPW_THINGS_HOST',
             CONF_PORT: 9997,
             ENV_PORT: 'SPW_THINGS_PORT',
-            CONF_PATH: '/things',
             CONF_DATA_DIRECTORY: 'things/data',
             CONF_DB_FILE_NAME: 'things.db',
             CONF_MIGRATIONS_FILE_NAME: 'things_migrations.json',
@@ -83,10 +80,11 @@ class Config:
         }
     ]
 
-    def __init__(self, service):
+    def __init__(self, service=None):
         self.service = service
         self.cookie_secret = os.getenv(Config.ENV_COOKIE_SECRET) or Config.defaults[Config.ENV_COOKIE_SECRET]
         self.password_secret = os.getenv(Config.ENV_PASSWORD_SECRET) or Config.defaults[Config.ENV_PASSWORD_SECRET]
+        self.token_secret = os.getenv(Config.ENV_TOKEN_SECRET) or Config.defaults[Config.ENV_TOKEN_SECRET]
         self.session_ttl = os.getenv(Config.ENV_SESSION_TTL) or Config.defaults[Config.ENV_SESSION_TTL]
         self.config_file_name = os.getenv(Config.ENV_CONFIG_FILE_NAME) or Config.defaults[Config.ENV_CONFIG_FILE_NAME]
 
@@ -108,9 +106,6 @@ class Config:
             self.all_services[service_name][Config.CONF_PORT] = \
                 os.getenv(service_item.get(Config.ENV_PORT)) or \
                 service_item.get(Config.CONF_PORT)
-
-            self.all_services[service_name][Config.CONF_PATH] = \
-                service_item.get(Config.CONF_PATH)
 
             if service_name == self.service:
                 self.data_directory = service_item.get(Config.CONF_DATA_DIRECTORY)
@@ -135,12 +130,7 @@ class Config:
             service = self.service
         return self.all_services.get(service).get(Config.CONF_PORT)
 
-    def get_path(self, service=None):
-        if service is None:
-            service = self.service
-        return self.all_services.get(service).get(Config.CONF_PATH)
-
     def get_service_url(self, service=None):
         if service is None:
             service = self.service
-        return f'{self.get_host(service)}:{self.get_port(service)}{self.get_path(service)}'
+        return f'http://{self.get_host(service)}:{self.get_port(service)}'

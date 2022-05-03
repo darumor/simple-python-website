@@ -1,0 +1,14 @@
+{
+    "migrations": [
+        {
+            "version": 1,
+            "comment": "created migrations table",
+            "sql": "create table if not exists migrations (\n    version integer primary key,\n    comment text not null,\n    migration_date text\n    );"
+        },
+        {
+            "version": 2,
+            "comment": "created auth_methods table",
+            "sql": "create table if not exists auth_methods (\n    user_id integer,\n    username text unique not null,\n    password text not null,\n    type text not null);"
+        }
+    ]
+}
