@@ -1,5 +1,3 @@
-from common.network.network import Network
-from common.config import Config
 import datetime
 import hashlib
 
@@ -33,6 +31,7 @@ class Token:
     @staticmethod
     def parse(query_params):
         for key in query_params.keys():
+            print(f'{key}: {query_params[key]}')
             if query_params[key] == 'None':
                 query_params[key] = None
 

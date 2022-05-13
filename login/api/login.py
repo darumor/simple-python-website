@@ -28,6 +28,7 @@ def do_login(db):
     response.headers['Content-type'] = 'application/json'
     return dict(login_success=success)
 
+
 @route('/register', method=['OPTIONS', 'POST'])
 def register(db):
     firstname = request.json.get('firstname')
@@ -36,18 +37,19 @@ def register(db):
     password = request.json.get('password')
     error_msg = None
     if firstname is not None and lastname is not None and username is not None and password is not None:
-        network = Network.get_network(Login.service.config)
         user_id = store.user_id_by_username(db, username)
-
         if user_id is not None:
             registration_success = False
             error_msg = 'Username is already in use'
         else:
-            registration_success = store.create_user(db, Login.service.config, firstname, lastname, username, password)
+            config = Login.service.config
+            network = Network.get_network(config)
+            registration_token = Token.create_service_token(Config.SERVICE_LOGIN, config)
+            registration_success = store.register_user(network, db, config, firstname, lastname, username, password, registration_token)
             if not registration_success:
                 error_msg = 'Some random error occurred'
     else:
-        registration_success=False
+        registration_success = False
         error_msg = 'Mandatory information missing'
 
     response.headers['Content-type'] = 'application/json'

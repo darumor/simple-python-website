@@ -45,7 +45,29 @@ def user_id_by_username(db, username):
         return user_id
     return None
 
-def register_user(db, config, firstname, lastname, username, password):
+
+def user_name_exists(db, username):
+    return user_id_by_username(db, username) is not None
+
+
+def register_user(network, db, config, firstname, lastname, username, password, token):
+    if user_name_exists(db, username):
+        return False
+
     # create_user
+    resp = network.post(Network.SERVICE_USERS, f'{Network.END_POINT_USERS}',
+                        dict(firstname=firstname, lastname=lastname), token)
+    print(f'new user: {resp}')
+    user_id = resp['user_id']
+
     # create_auth_method
+    if user_id > 0:
+        password_hash = calculate_password_hash(config, password)
+        row_count = db.execute(
+            "INSERT INTO auth_methods(user_id, username, password, type) values(?, ?, ?, 'USERNAME_AND_PASSWORD');",
+            (user_id, username, password_hash)).rowcount
+
+        if row_count > 0:
+            return True
+
     return None

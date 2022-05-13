@@ -16,22 +16,12 @@ var admin_app = Vue.createApp({
       mounted () {
         Services.getServiceUrl(SERVICE_LOGIN)
          .then(service_url => {
-         console.log(service_url)
             var url = service_url +  '/current-user';
-            console.log(url);
             axios.get(url, {withCredentials: true}
             )
                 .then(response => {
-                    console.log(response);
-                    console.log(response.data);
-                    console.log(response.data.id);
-                    console.log(response.data.firstname);
                     this.user = response.data;
                     this.logged_in = true;
-                    console.log(this.user);
-                    console.log(this.user['is_admin']);
-                    console.log(this.user.is_admin);
-                    console.log(response.data.is_admin);
                     this.logged_in_as_admin = this.user["is_admin"] > 0
                 })
                 .catch(error => {
@@ -39,7 +29,7 @@ var admin_app = Vue.createApp({
                 });
          })
          .catch(error => {
-                    console.log(error);
+                console.log(error);
          });
         }
       });

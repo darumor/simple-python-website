@@ -1,3 +1,6 @@
+import Services from './Services.js'
+const SERVICE_LOGIN = 'SERVICE_LOGIN';
+
 export default {
     data(){
         return {
@@ -12,13 +15,16 @@ export default {
         }
     },
     methods: {
-        postRegistration: function(event) {
-            axios.post('/register', {
+        postRegistration: async function(event) {
+            const login_url = await Services.getServiceUrl(SERVICE_LOGIN);
+            const url = login_url + '/register';
+            axios.post(url, {
                 firstname: this.firstname,
                 lastname: this.lastname,
                 username: this.username,
                 password: this.password
-            })
+            },
+             {withCredentials: true})
             .then(response => {
                 if (response.data.registration_success) {
                     this.isSuccess = true;
