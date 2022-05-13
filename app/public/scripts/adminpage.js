@@ -17,8 +17,7 @@ var admin_app = Vue.createApp({
         Services.getServiceUrl(SERVICE_LOGIN)
          .then(service_url => {
             var url = service_url +  '/current-user';
-            axios.get(url, {withCredentials: true}
-            )
+            axios.get(url, {withCredentials: true})
                 .then(response => {
                     this.user = response.data;
                     this.logged_in = true;

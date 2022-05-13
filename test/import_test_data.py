@@ -25,7 +25,7 @@ def import_things(config, file_name='things.json'):
 
 if __name__ == '__main__':
     print("importing test data...")
-    import_users(Config(Config.SERVICE_USERS))
-    import_authdata(Config(Config.SERVICE_LOGIN))
-  #  import_things(Config(Config.SERVICE_THINGS))
+    #import_users(Config(Config.SERVICE_USERS))
+    #import_authdata(Config(Config.SERVICE_LOGIN))
+    #import_things(Config(Config.SERVICE_THINGS))
 

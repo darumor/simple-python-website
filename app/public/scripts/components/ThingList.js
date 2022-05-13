@@ -1,4 +1,6 @@
 import Thing from './Thing.js'
+import Services from './Services.js'
+const SERVICE_THINGS = 'SERVICE_THINGS';
 
 export default {
      components: {
@@ -10,7 +12,11 @@ export default {
           }
       },
       mounted () {
-        axios.get('/things')
+        Services.getServiceUrl(SERVICE_THINGS)
+         .then(service_url => {
+            var url = service_url +  '/things';
+
+        axios.get(url, {withCredentials: true})
             .then(response => {
                 console.log(response)
                 this.things = response.data.things
@@ -18,6 +24,10 @@ export default {
             .catch(error => {
                 console.log(error);
             });
+            })
+         .catch(error => {
+                console.log(error);
+         });
       },
       template:`<div class="row justify-content-evenly">
                     <div class="col-sm-1">

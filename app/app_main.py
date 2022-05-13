@@ -15,9 +15,3 @@ if __name__ == '__main__':
     app_service = App()
     app.app_main.App.service = app_service
     app_service.run()
-
-
-
-
-
-
