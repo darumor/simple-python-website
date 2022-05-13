@@ -49,20 +49,12 @@ class Network:
         data_url = self.get_url(service, path)
         print(f'network.data_url = POST {data_url}')
         try:
-         #   body = {'ids': [12, 14, 50]}
-         #   myurl = "http://www.testmycode.com"
-         #   req = urllib.request.Request(myurl)
-         #   req.add_header('Content-Type', 'application/json; charset=utf-8')
-         #   jsondata = json.dumps(body)
-         #   jsondataasbytes = jsondata.encode('utf-8')  # needs to be bytes
-         #   req.add_header('Content-Length', len(jsondataasbytes))
-         #   response = urllib.request.urlopen(req, jsondataasbytes)
-
-
-            data = parse.urlencode(parameters).encode('utf-8')
-            print(f'data: {data}')
-            req = request.Request(data_url, data=data)
-            response = request.urlopen(req).read()
+            req = request.Request(data_url)
+            req.add_header('Content-Type', 'application/json; charset=utf-8')
+            json_data = json.dumps(parameters)
+            json_data_as_bytes = json_data.encode('utf-8')
+            req.add_header('Content-Length', str(len(json_data_as_bytes)))
+            response = request.urlopen(req, json_data_as_bytes).read()
             return json.loads(response)
         except error.HTTPError as err:
             print(f'Error {err}')
@@ -82,13 +74,10 @@ class Network:
 
     @staticmethod
     def extract_token_from_query(req):
-        query_parameters = dict(req.query.decode())
-        token = Token.parse(query_parameters)
+        token = Token.parse(dict(req.query.decode()))
         return token
 
     @staticmethod
-    def extract_token_from_body(request):
-        token_dict = ast.literal_eval(request.forms.get('token').decode('utf-8'))
-        print(token_dict)
-        token = Token.parse(token_dict)
+    def extract_token_from_body(json_val):
+        token = Token.parse(json_val["token"])
         return token

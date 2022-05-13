@@ -11,20 +11,17 @@ def user_by_user_id(db, user_id):
     if token.is_valid_service_token(config):
         return store.get_user_by_id(db, user_id)
     else:
-        return dict(error='Invalid token')
+        return HTTPError(401, 'Access denied')
 
 
 # post create_user
 @route('/users', method=['OPTIONS', 'POST'])
 def create_user(db):
-    details = request.forms
-    for key in details.keys():
-        print(f'{key}: {details[key]}')
-    token = Network.extract_token_from_body(request)
+    token = Network.extract_token_from_body(request.json)
     config = Users.service.config
     if token.is_valid_service_token(config):
-        firstname = request.forms.get('firstname')
-        lastname = request.forms.get('lastname')
+        firstname = request.json.get('firstname')
+        lastname = request.json.get('lastname')
         cursor = db.execute(
             'INSERT INTO users(firstname, lastname, created_at, is_admin) values(?, ?, CURRENT_TIMESTAMP, 0);',
             (firstname, lastname))
@@ -34,6 +31,6 @@ def create_user(db):
         else:
             return dict(user_id=cursor.lastrowid)
     else:
-        return dict(error='Invalid token')
+        return HTTPError(401, 'Access denied')
 
 
