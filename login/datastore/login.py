@@ -38,8 +38,6 @@ def get_user_by_id(network, user_id, token):
     return network.get(Network.SERVICE_USERS, f'{Network.END_POINT_USER_BY_ID}{user_id}', {}, token)
 
 
-
-
 def user_id_by_username(db, username):
     row = db.execute("SELECT user_id from auth_methods where username=? and type='USERNAME_AND_PASSWORD'", (username,)).fetchone()
     if row:

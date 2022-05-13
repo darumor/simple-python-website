@@ -17,6 +17,6 @@ class Main:
 
         a = bottle.app()
         a.install(SQLitePlugin(dbfile=self.config.get_db_file_path()))
-        a.install(EnableCors())
+        a.install(EnableCors(self.config.get_service_url(Config.SERVICE_APP)))
         a.run(host=self.config.get_host(), port=self.config.get_port())
 

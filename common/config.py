@@ -29,7 +29,7 @@ class Config:
         SPW_COOKIE_SECRET='some-secret-value',
         SPW_PASSWORD_SECRET='some-other-secret-value',
         SPW_TOKEN_SECRET='yet-another-secret-value',
-        SPW_SESSION_TTL=10,
+        SPW_SESSION_TTL=30,
         SPW_CONFIG_FILE_NAME=None
     )
 

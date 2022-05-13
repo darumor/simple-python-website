@@ -1,5 +1,5 @@
 import Services from './Services.js'
-const SERVICE_LOGIN = 'SERVICE_LOGIN'
+const SERVICE_LOGIN = 'SERVICE_LOGIN';
 
 export default {
     data(){
@@ -15,13 +15,12 @@ export default {
     methods: {
         postLogin: async function(event) {
             const login_url = await Services.getServiceUrl(SERVICE_LOGIN);
-            console.log(login_url)
             const url = login_url + '/login';
-            console.log('POSTING: ' + url);
             axios.post(url, {
                 username: this.username,
                 password: this.password
-            })
+            },
+             {withCredentials: true})
             .then(response => {
                 console.log(response);
                 if (response.data.login_success) {

@@ -31,7 +31,7 @@ class Network:
         url_parts[4] = parse.urlencode(query)
 
         data_url = parse.urlunparse(url_parts)
-        print(data_url)
+        print(f'network.data_url = {data_url}')
         try:
             content = request.urlopen(data_url).read()
             return json.loads(content)
