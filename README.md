@@ -4,6 +4,19 @@
 This is a [Simple Python Website Project](https://github.com/darumor/simple-python-website) that can be used for prototyping modern web services. 
 This application is not very scalable nor data secure and thus should not be used in production.
 
+## Architecture
+This version of the Simple Python Website Project consists of 4 backend microservices and a web client.
+- App serves the static files, the frontend app and the service broker. All APIs are open.
+- Login handles user login, registering, permissions and other current user info for the frontend. Login stores authentication credentials.
+- User handles user data storage and new user creation for other backends, namely for Login. Accessible only for other services' requests.
+- Things handles storing data about 'things'. Can be accessed from frontend, permissions are checked.
+- Web Client is an app consisting of 4 SPAs that connect directly to different microservices. Services are discovered using service broker the App provides.
+  - Frontpage is accessible to all. Shows public information of 'things'
+  - Login serves user login and user registration forms
+  - Restricted is accessible only by logged in users
+  - Adminpage is accessible only by logged in administrators
+
+
 The project uses 
 - **ngrok** as a way to publish the service (no actual dependency) (https://ngrok.com/)
 - **bottle** as web server / adapter (http://bottlepy.org/docs/dev/)
@@ -40,7 +53,7 @@ First register an Ngrok account and verify your email
     $ ngrok authtoken .... 
 
 ## Configuration
-Using environment variables (while developing edit data/config.py)
+Using environment variables (while developing edit common/config.py)
 - Set database filename (SPW_DATABASE_FILENAME)
 - Set migrations filename (SPW_MIGRATIONS_FILENAME)
 - Set data directory path (SPW_DATA_DIRECTORY)
@@ -53,15 +66,21 @@ Using environment variables (while developing edit data/config.py)
 Note: If environment variables are set, they override any / all default values
 
 ## Running the application
-Terminal 1
+Terminal 1-4
 
     $ ngrok http 9999
+    $ ngrok http 9998
+    $ ngrok http 9997
+    $ ngrok http 9996
 
-Terminal 2
+Terminal 5-8
 
-    $ python3 main.py
+    $ python3 appp/app_main.py
+    $ python3 login/login_main.py
+    $ python3 things/things_main.py
+    $ python3 users/users_main.py
 
-Terminal 3
+Terminal 9
 
     $ python3 test/import_test_data.py
 
@@ -81,12 +100,18 @@ Default password should be changed before publishing (only present in the test d
 
 ## Todo
 There are still thing to do:
-- auth_methods to its own store (separate from users)
 - primary key to auth_methods
 - user creation into one [transaction](https://www.sqlite.org/lang_transaction.html)
-- maybe separate different services to different db's to simulate microservices
-  - auth, userdata, things 
 - userroles and permissions in the cookie?
   - maybe use a local session storage for the access token
   - wrap axios into a wrapper that reads the local session storage
-- Google OAuth [frontend](https://developers.google.com/identity/sign-in/web/sign-in) [backend](https://developers.google.com/identity/sign-in/web/backend-auth) 
+- Google OAuth
+  - [frontend](https://developers.google.com/identity/sign-in/web/sign-in) 
+  - [backend](https://developers.google.com/identity/sign-in/web/backend-auth)
+  - https://developers.google.com/identity/sign-in/web/sign-in
+- google cloud
+  - [python](https://cloud.google.com/python)
+  - [plugins](https://cloud.google.com/code)
+  - [code labs](https://developers.google.com/learn/topics/python#codelabs)
+  - [App Engine](https://cloud.google.com/appengine)
+  - [Cloud Firestore](https://firebase.google.com/products/firestore)

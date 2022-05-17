@@ -3,7 +3,7 @@ from login.datastore import login
 from common.config import Config
 
 
-class UsersTest(unittest.TestCase):
+class LoginDatastoreTest(unittest.TestCase):
 
     def setUp(self) -> None:
         self.config = Config()
