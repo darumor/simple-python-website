@@ -75,7 +75,7 @@ Terminal 1-4
 
 Terminal 5-8
 
-    $ python3 appp/app_main.py
+    $ python3 app/app_main.py
     $ python3 login/login_main.py
     $ python3 things/things_main.py
     $ python3 users/users_main.py
@@ -100,7 +100,6 @@ Default password should be changed before publishing (only present in the test d
 
 ## Todo
 There are still thing to do:
-- primary key to auth_methods
 - user creation into one [transaction](https://www.sqlite.org/lang_transaction.html)
 - userroles and permissions in the cookie?
   - maybe use a local session storage for the access token
@@ -115,3 +114,4 @@ There are still thing to do:
   - [code labs](https://developers.google.com/learn/topics/python#codelabs)
   - [App Engine](https://cloud.google.com/appengine)
   - [Cloud Firestore](https://firebase.google.com/products/firestore)
+  - [GCP reference architectures](https://cloud.google.com/blog/products/application-development/13-popular-application-architectures-for-google-cloud)
